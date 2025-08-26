@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Infusion Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Lighter gray background */
+        }
+        .calculator-section {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            margin-bottom: 2rem;
+            border: 1px solid #e5e7eb;
+        }
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+        .input-group label {
+            font-weight: 500;
+            color: #4b5563;
+        }
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .input-group input, .input-group .output {
+            padding: 0.6rem 0.85rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 0.5rem;
+            text-align: right;
+            font-size: 0.95rem;
+            width: 100%;
+            max-width: 150px; /* Control input width */
+        }
+        .input-group input:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+        }
+        .input-group .output {
+            background-color: #eef2ff; /* Light indigo background for outputs */
+            font-weight: 600;
+            color: #1e3a8a; /* Darker blue text */
+            border-color: #c7d2fe;
+        }
+        .unit {
+            margin-left: 0.75rem;
+            color: #6B7280;
+            font-size: 0.9rem;
+            width: 80px; /* Fixed width for alignment */
+            text-align: left;
+        }
+        h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1e40af; /* A professional blue */
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            padding-top: 1rem;
+        }
+        .header svg {
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 lg:p-8">
+
+    <div class="max-w-3xl mx-auto">
+        <div class="header">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+            </svg>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Medical Infusion Calculator</h1>
+        </div>
+
+        <!-- Drug Dilution Section -->
+        <div id="drug-dilution" class="calculator-section">
+            <h2>Drug Dilution</h2>
+            <div class="input-group">
+                <label for="drug-amount">Amount of drug</label>
+                <div class="input-wrapper">
+                    <input type="number" id="drug-amount" value="8">
+                    <span class="unit">mg</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="total-diluent">Total diluent</label>
+                <div class="input-wrapper">
+                    <input type="number" id="total-diluent" value="50">
+                    <span class="unit">ml</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Concentration</label>
+                <div class="input-wrapper">
+                    <span id="concentration" class="output">0.16</span>
+                    <span class="unit">mg/ml</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inotropes - Calculating Infusion Rate Section -->
+        <div id="calc-infusion-rate" class="calculator-section">
+            <h2>Calculate Infusion Rate from Dose</h2>
+            <div class="input-group">
+                <label for="patient-weight">Patient Weight</label>
+                 <div class="input-wrapper">
+                    <input type="number" id="patient-weight" value="60">
+                    <span class="unit">kg</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="desired-dose-mcg-kg-min">Desired dose</label>
+                <div class="input-wrapper">
+                    <input type="number" id="desired-dose-mcg-kg-min" value="0.3">
+                    <span class="unit">mcg/kg/min</span>
+                </div>
+            </div>
+             <div class="input-group">
+                <label>Total Dose</label>
+                <div class="input-wrapper">
+                    <span id="total-dose-mcg-min" class="output">18.00</span>
+                    <span class="unit">mcg/min</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Total Dose</label>
+                <div class="input-wrapper">
+                    <span id="total-dose-mcg-hour" class="output">1080.00</span>
+                    <span class="unit">mcg/hour</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Total Dose</label>
+                <div class="input-wrapper">
+                    <span id="total-dose-mg-hour-d" class="output">1.08</span>
+                    <span class="unit">mg/hour</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Infusion rate</label>
+                <div class="input-wrapper">
+                    <span id="infusion-rate-ml-hr" class="output">6.75</span>
+                    <span class="unit">ml/hr</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inotropes - Calculating Dose from Infusion Rate Section -->
+        <div id="calc-dose-from-infusion" class="calculator-section">
+            <h2>Calculate Dose from Infusion Rate</h2>
+            <div class="input-group">
+                <label for="infusion-rate-ml-hr-e">Infusion rate</label>
+                <div class="input-wrapper">
+                    <input type="number" id="infusion-rate-ml-hr-e" value="5">
+                    <span class="unit">ml/hr</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Total Dose</label>
+                <div class="input-wrapper">
+                    <span id="total-dose-mg-hr-e" class="output">0.80</span>
+                    <span class="unit">mg/hr</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Total Dose</label>
+                <div class="input-wrapper">
+                    <span id="total-dose-mcg-hr-e" class="output">800</span>
+                    <span class="unit">mcg/hr</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Total Dose</label>
+                <div class="input-wrapper">
+                    <span id="total-dose-mcg-min-e" class="output">13.33</span>
+                    <span class="unit">mcg/min</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Desired Dose</label>
+                <div class="input-wrapper">
+                    <span id="desired-dose-mcg-kg-min-e" class="output">0.22</span>
+                    <span class="unit">mcg/kg/min</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DOM Elements ---
+        // Section B: Drug Dilution
+        const drugAmount = document.getElementById('drug-amount');
+        const totalDiluent = document.getElementById('total-diluent');
+        const concentrationEl = document.getElementById('concentration');
+
+        // Section D: Calc Infusion Rate
+        const patientWeight = document.getElementById('patient-weight');
+        const desiredDoseMcgKgMin = document.getElementById('desired-dose-mcg-kg-min');
+        const totalDoseMcgMinEl = document.getElementById('total-dose-mcg-min');
+        const totalDoseMcgHourEl = document.getElementById('total-dose-mcg-hour');
+        const totalDoseMgHourDEl = document.getElementById('total-dose-mg-hour-d');
+        const infusionRateMlHrEl = document.getElementById('infusion-rate-ml-hr');
+
+        // Section E: Calc Dose from Infusion
+        const infusionRateMlHrE = document.getElementById('infusion-rate-ml-hr-e');
+        const totalDoseMgHrEEl = document.getElementById('total-dose-mg-hr-e');
+        const totalDoseMcgHrEEl = document.getElementById('total-dose-mcg-hr-e');
+        const totalDoseMcgMinEEl = document.getElementById('total-dose-mcg-min-e');
+        const desiredDoseMcgKgMinEEl = document.getElementById('desired-dose-mcg-kg-min-e');
+
+        // --- Calculation Functions ---
+
+        function calculateDrugDilution() {
+            const amount = parseFloat(drugAmount.value) || 0;
+            const diluent = parseFloat(totalDiluent.value) || 0;
+            if (diluent === 0) {
+                concentrationEl.textContent = '0.00';
+                return 0;
+            }
+            const concentration = amount / diluent;
+            concentrationEl.textContent = concentration.toFixed(2);
+            return concentration;
+        }
+
+        function calculateInfusionRate() {
+            const weight = parseFloat(patientWeight.value) || 0;
+            const desiredDose = parseFloat(desiredDoseMcgKgMin.value) || 0;
+            const concentration = calculateDrugDilution(); // Get concentration from section B
+
+            const totalDoseMcgMin = desiredDose * weight;
+            const totalDoseMcgHour = totalDoseMcgMin * 60;
+            const totalDoseMgHour = totalDoseMcgHour / 1000;
+            
+            let infusionRate = 0;
+            if (concentration > 0) {
+                 infusionRate = totalDoseMgHour / concentration;
+            }
+
+            totalDoseMcgMinEl.textContent = totalDoseMcgMin.toFixed(2);
+            totalDoseMcgHourEl.textContent = totalDoseMcgHour.toFixed(2);
+            totalDoseMgHourDEl.textContent = totalDoseMgHour.toFixed(2);
+            infusionRateMlHrEl.textContent = infusionRate.toFixed(2);
+        }
+
+        function calculateDoseFromInfusion() {
+            const weight = parseFloat(patientWeight.value) || 0;
+            const infusionRate = parseFloat(infusionRateMlHrE.value) || 0;
+            const concentration = calculateDrugDilution(); // Get concentration from section B
+
+            const totalDoseMgHr = infusionRate * concentration;
+            const totalDoseMcgHr = totalDoseMgHr * 1000;
+            const totalDoseMcgMin = totalDoseMcgHr / 60;
+            
+            let desiredDose = 0;
+            if (weight > 0) {
+                desiredDose = totalDoseMcgMin / weight;
+            }
+
+            totalDoseMgHrEEl.textContent = totalDoseMgHr.toFixed(2);
+            totalDoseMcgHrEEl.textContent = totalDoseMcgHr.toFixed(0);
+            totalDoseMcgMinEEl.textContent = totalDoseMcgMin.toFixed(2);
+            desiredDoseMcgKgMinEEl.textContent = desiredDose.toFixed(2);
+        }
+        
+        // --- Event Listeners ---
+        function addEventListeners() {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                input.addEventListener('input', calculateAll);
+            });
+        }
+
+        function calculateAll() {
+            calculateDrugDilution();
+            calculateInfusionRate();
+            calculateDoseFromInfusion();
+        }
+
+        // --- Initial Calculation on Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            calculateAll();
+            addEventListeners();
+        });
+
+    </script>
+</body>
+</html>
