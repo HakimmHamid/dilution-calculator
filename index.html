@@ -9,19 +9,19 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* Lighter gray background */
+            background-color: #f8fafc;
         }
         .calculator-section {
             background-color: #ffffff;
             border-radius: 0.75rem;
-            padding: 1.5rem 1rem; /* Adjusted padding for mobile */
+            padding: 1.5rem 1rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
             margin-bottom: 2rem;
             border: 1px solid #e5e7eb;
         }
         .input-group {
             display: grid;
-            grid-template-columns: 1fr; /* Default to single column for mobile */
+            grid-template-columns: 1fr;
             gap: 0.5rem;
             align-items: center;
             margin-bottom: 1.25rem;
@@ -29,12 +29,12 @@
         .input-group label {
             font-weight: 500;
             color: #4b5563;
-            justify-self: start; /* Align label to the left */
+            justify-self: start;
         }
         .input-wrapper {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Space between input and unit */
+            justify-content: space-between;
         }
         .input-group input, .input-group .output {
             padding: 0.6rem 0.85rem;
@@ -43,7 +43,7 @@
             text-align: right;
             font-size: 0.95rem;
             width: 100%;
-            max-width: 180px; /* Adjust width */
+            max-width: 180px;
         }
         .input-group input:focus {
             outline: 2px solid transparent;
@@ -52,9 +52,9 @@
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
         }
         .input-group .output {
-            background-color: #eef2ff; /* Light indigo background for outputs */
+            background-color: #eef2ff;
             font-weight: 600;
-            color: #1e3a8a; /* Darker blue text */
+            color: #1e3a8a;
             border-color: #c7d2fe;
         }
         .unit {
@@ -67,7 +67,7 @@
             font-size: 1.125rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
-            color: #1e40af; /* A professional blue */
+            color: #1e40af;
             padding-bottom: 0.75rem;
             border-bottom: 1px solid #e5e7eb;
         }
@@ -81,26 +81,55 @@
         }
         .header svg {
             color: #3b82f6;
-            flex-shrink: 0; /* Prevent icon from shrinking */
+            flex-shrink: 0;
+        }
+        .collapsible-toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            background: #f9fafb;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e5e7eb;
+        }
+        .collapsible-toggle span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #4b5563;
+        }
+        .collapsible-toggle svg {
+            transition: transform 0.2s ease-in-out;
+        }
+        .collapsible-content {
+            padding-top: 0.5rem;
+            border-left: 2px solid #e5e7eb;
+            padding-left: 1rem;
+            margin-left: 0.25rem;
+        }
+        .rotated {
+            transform: rotate(180deg);
         }
         
-        /* Responsive adjustments for larger screens */
         @media (min-width: 640px) {
             .calculator-section {
                 padding: 1.5rem 2rem;
             }
             .input-group {
-                grid-template-columns: 1fr 1fr; /* Two columns on desktop */
+                grid-template-columns: 1fr 1fr;
                 gap: 1rem;
             }
             .input-wrapper {
-                justify-content: flex-end; /* Original alignment for desktop */
+                justify-content: flex-end;
             }
              .input-group input, .input-group .output {
                 max-width: 150px;
             }
             .unit {
-                 width: 80px; /* Fixed width for alignment on desktop */
+                 width: 80px;
             }
         }
     </style>
@@ -113,6 +142,18 @@
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
             </svg>
             <h1 class="text-xl sm:text-3xl font-bold text-gray-800">Medical Infusion Calculator</h1>
+        </div>
+
+        <!-- Patient Information Section -->
+        <div id="patient-info" class="calculator-section">
+            <h2>Patient Information</h2>
+            <div class="input-group">
+                <label for="patient-weight">Patient Weight</label>
+                 <div class="input-wrapper">
+                    <input type="number" id="patient-weight" value="60">
+                    <span class="unit">kg</span>
+                </div>
+            </div>
         </div>
 
         <!-- Drug Dilution Section -->
@@ -145,38 +186,10 @@
         <div id="calc-infusion-rate" class="calculator-section">
             <h2>Calculate Infusion Rate from Dose</h2>
             <div class="input-group">
-                <label for="patient-weight">Patient Weight</label>
-                 <div class="input-wrapper">
-                    <input type="number" id="patient-weight" value="60">
-                    <span class="unit">kg</span>
-                </div>
-            </div>
-            <div class="input-group">
                 <label for="desired-dose-mcg-kg-min">Desired dose</label>
                 <div class="input-wrapper">
                     <input type="number" id="desired-dose-mcg-kg-min" value="0.3">
                     <span class="unit">mcg/kg/min</span>
-                </div>
-            </div>
-             <div class="input-group">
-                <label>Total Dose</label>
-                <div class="input-wrapper">
-                    <span id="total-dose-mcg-min" class="output">18.00</span>
-                    <span class="unit">mcg/min</span>
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Total Dose</label>
-                <div class="input-wrapper">
-                    <span id="total-dose-mcg-hour" class="output">1080.00</span>
-                    <span class="unit">mcg/hour</span>
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Total Dose</label>
-                <div class="input-wrapper">
-                    <span id="total-dose-mg-hour-d" class="output">1.08</span>
-                    <span class="unit">mg/hour</span>
                 </div>
             </div>
             <div class="input-group">
@@ -184,6 +197,33 @@
                 <div class="input-wrapper">
                     <span id="infusion-rate-ml-hr" class="output">6.75</span>
                     <span class="unit">ml/hr</span>
+                </div>
+            </div>
+            <div class="collapsible-toggle">
+                <span>Show Intermediate Calculations</span>
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+            </div>
+            <div class="collapsible-content hidden">
+                 <div class="input-group">
+                    <label>Total Dose</label>
+                    <div class="input-wrapper">
+                        <span id="total-dose-mcg-min" class="output">18.00</span>
+                        <span class="unit">mcg/min</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Total Dose</label>
+                    <div class="input-wrapper">
+                        <span id="total-dose-mcg-hour" class="output">1080.00</span>
+                        <span class="unit">mcg/hour</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Total Dose</label>
+                    <div class="input-wrapper">
+                        <span id="total-dose-mg-hour-d" class="output">1.08</span>
+                        <span class="unit">mg/hour</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -199,31 +239,37 @@
                 </div>
             </div>
             <div class="input-group">
-                <label>Total Dose</label>
-                <div class="input-wrapper">
-                    <span id="total-dose-mg-hr-e" class="output">0.80</span>
-                    <span class="unit">mg/hr</span>
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Total Dose</label>
-                <div class="input-wrapper">
-                    <span id="total-dose-mcg-hr-e" class="output">800</span>
-                    <span class="unit">mcg/hr</span>
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Total Dose</label>
-                <div class="input-wrapper">
-                    <span id="total-dose-mcg-min-e" class="output">13.33</span>
-                    <span class="unit">mcg/min</span>
-                </div>
-            </div>
-            <div class="input-group">
                 <label>Desired Dose</label>
                 <div class="input-wrapper">
                     <span id="desired-dose-mcg-kg-min-e" class="output">0.22</span>
                     <span class="unit">mcg/kg/min</span>
+                </div>
+            </div>
+            <div class="collapsible-toggle">
+                <span>Show Intermediate Calculations</span>
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+            </div>
+            <div class="collapsible-content hidden">
+                <div class="input-group">
+                    <label>Total Dose</label>
+                    <div class="input-wrapper">
+                        <span id="total-dose-mg-hr-e" class="output">0.80</span>
+                        <span class="unit">mg/hr</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Total Dose</label>
+                    <div class="input-wrapper">
+                        <span id="total-dose-mcg-hr-e" class="output">800</span>
+                        <span class="unit">mcg/hr</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Total Dose</label>
+                    <div class="input-wrapper">
+                        <span id="total-dose-mcg-min-e" class="output">13.33</span>
+                        <span class="unit">mcg/min</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -231,28 +277,23 @@
 
     <script>
         // --- DOM Elements ---
-        // Section B: Drug Dilution
         const drugAmount = document.getElementById('drug-amount');
         const totalDiluent = document.getElementById('total-diluent');
         const concentrationEl = document.getElementById('concentration');
-
-        // Section D: Calc Infusion Rate
         const patientWeight = document.getElementById('patient-weight');
         const desiredDoseMcgKgMin = document.getElementById('desired-dose-mcg-kg-min');
         const totalDoseMcgMinEl = document.getElementById('total-dose-mcg-min');
         const totalDoseMcgHourEl = document.getElementById('total-dose-mcg-hour');
         const totalDoseMgHourDEl = document.getElementById('total-dose-mg-hour-d');
         const infusionRateMlHrEl = document.getElementById('infusion-rate-ml-hr');
-
-        // Section E: Calc Dose from Infusion
         const infusionRateMlHrE = document.getElementById('infusion-rate-ml-hr-e');
         const totalDoseMgHrEEl = document.getElementById('total-dose-mg-hr-e');
         const totalDoseMcgHrEEl = document.getElementById('total-dose-mcg-hr-e');
         const totalDoseMcgMinEEl = document.getElementById('total-dose-mcg-min-e');
         const desiredDoseMcgKgMinEEl = document.getElementById('desired-dose-mcg-kg-min-e');
+        const collapsibleToggles = document.querySelectorAll('.collapsible-toggle');
 
         // --- Calculation Functions ---
-
         function calculateDrugDilution() {
             const amount = parseFloat(drugAmount.value) || 0;
             const diluent = parseFloat(totalDiluent.value) || 0;
@@ -268,17 +309,14 @@
         function calculateInfusionRate() {
             const weight = parseFloat(patientWeight.value) || 0;
             const desiredDose = parseFloat(desiredDoseMcgKgMin.value) || 0;
-            const concentration = calculateDrugDilution(); // Get concentration from section B
-
+            const concentration = calculateDrugDilution();
             const totalDoseMcgMin = desiredDose * weight;
             const totalDoseMcgHour = totalDoseMcgMin * 60;
             const totalDoseMgHour = totalDoseMcgHour / 1000;
-            
             let infusionRate = 0;
             if (concentration > 0) {
                  infusionRate = totalDoseMgHour / concentration;
             }
-
             totalDoseMcgMinEl.textContent = totalDoseMcgMin.toFixed(2);
             totalDoseMcgHourEl.textContent = totalDoseMcgHour.toFixed(2);
             totalDoseMgHourDEl.textContent = totalDoseMgHour.toFixed(2);
@@ -288,17 +326,14 @@
         function calculateDoseFromInfusion() {
             const weight = parseFloat(patientWeight.value) || 0;
             const infusionRate = parseFloat(infusionRateMlHrE.value) || 0;
-            const concentration = calculateDrugDilution(); // Get concentration from section B
-
+            const concentration = calculateDrugDilution();
             const totalDoseMgHr = infusionRate * concentration;
             const totalDoseMcgHr = totalDoseMgHr * 1000;
             const totalDoseMcgMin = totalDoseMcgHr / 60;
-            
             let desiredDose = 0;
             if (weight > 0) {
                 desiredDose = totalDoseMcgMin / weight;
             }
-
             totalDoseMgHrEEl.textContent = totalDoseMgHr.toFixed(2);
             totalDoseMcgHrEEl.textContent = totalDoseMcgHr.toFixed(0);
             totalDoseMcgMinEEl.textContent = totalDoseMcgMin.toFixed(2);
@@ -310,6 +345,21 @@
             const inputs = document.querySelectorAll('input[type="number"]');
             inputs.forEach(input => {
                 input.addEventListener('input', calculateAll);
+            });
+
+            collapsibleToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const content = toggle.nextElementSibling;
+                    const icon = toggle.querySelector('svg');
+                    content.classList.toggle('hidden');
+                    icon.classList.toggle('rotated');
+                    const text = toggle.querySelector('span');
+                    if (content.classList.contains('hidden')) {
+                        text.textContent = 'Show Intermediate Calculations';
+                    } else {
+                        text.textContent = 'Hide Intermediate Calculations';
+                    }
+                });
             });
         }
 
